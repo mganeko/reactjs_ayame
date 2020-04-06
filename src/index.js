@@ -7,16 +7,16 @@ import { v4 as uuidv4 } from 'uuid';
 import './index.css';
 
 // ---- TODO -----
-//  - roomID (input, url)
+//  - DONE: roomID (input, url)
 //  - signalingKey (input, url)
 //  - codec (video, audio)
-//  - button enable/disable control
+//  - DONE: button enable/disable control
 //  - github actions for deploy github pages
 
 // ------ params -----
 const signalingUrl = 'wss://ayame-lite.shiguredo.jp/signaling';
 const signalingKey = null;
-let roomId = 'mmmmm-react-ayame-test';
+let roomId = 'mm-react-ayame-test';
 let clientId = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 //let videoCodec = null;
 //let audioCodec = null;
@@ -38,6 +38,7 @@ class App extends React.Component {
       playing: false,
       connected: false,
       gotRemoteStream: false,
+      roomId: roomId,
     };
 
     // This binding is necessary to make `this` work in the callback
@@ -45,6 +46,7 @@ class App extends React.Component {
     this.stopVideo = this.stopVideo.bind(this);
     this.connect = this.connect.bind(this);
     this.disconnect = this.disconnect.bind(this);
+    this.handleRoomChange = this.handleRoomChange.bind(this);
 
 
     // -- Ayame connection --
@@ -103,7 +105,8 @@ class App extends React.Component {
     }
 
     // (signalingUrl: string, roomId: string, options: ConnectionOptions, debug: boolean, isRelay: boolean)
-    this.conn = AyameConnection(signalingUrl, roomId, options);
+    console.log('connecting roomId=%s', this.state.roomId);
+    this.conn = AyameConnection(signalingUrl, this.state.roomId, options);
     this.conn.on('open', ({ authzMetadata }) => console.log('auth:', authzMetadata));
     this.conn.on('disconnect', (e) => {
       console.log('disconnected:', e);
@@ -143,6 +146,10 @@ class App extends React.Component {
     this.setState({ connected: false, gotRemoteStream: false });
   }
 
+  handleRoomChange(e) {
+    this.setState({ roomId: e.target.value });
+  }
+
   // -----------------
   render() {
     console.log('App render()');
@@ -151,7 +158,8 @@ class App extends React.Component {
         React Ayame-Lite example<br />
         <button onClick={this.startVideo} disabled={this.state.playing || this.state.connected}> Start Video</button >
         <button onClick={this.stopVideo} disabled={!this.state.playing || this.state.connected}>Stop Video</button>
-        &nbsp;
+        <br />
+        Room: <input id="room_id" type="text" value={this.state.roomId} onChange={this.handleRoomChange} disabled={this.state.connected}></input>
         <button onClick={this.connect} disabled={this.state.connected || !this.state.playing}> Connect</button >
         <button onClick={this.disconnect} disabled={!this.state.connected}>Disconnect</button>
         <div className="VideoContainer">
