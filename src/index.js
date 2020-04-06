@@ -6,6 +6,13 @@ import { v4 as uuidv4 } from 'uuid';
 
 import './index.css';
 
+// ---- TODO -----
+//  - roomID (input, url)
+//  - signalingKey (input, url)
+//  - codec (video, audio)
+//  - button enable/disable control
+//  - github actions for deploy github pages
+
 // ------ params -----
 const signalingUrl = 'wss://ayame-lite.shiguredo.jp/signaling';
 const signalingKey = null;
