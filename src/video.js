@@ -21,7 +21,12 @@ class Video extends React.Component {
     console.log('Video render(), id=%s', this.props.id);
     const stream = this.props.stream;
     if (this.elementRef.current) {
-      this.elementRef.current.srcObject = stream;
+      if (this.elementRef.current.srcObject === stream) {
+        console.log('same stream, so skip');
+      }
+      else {
+        this.elementRef.current.srcObject = stream;
+      }
     }
     else {
       console.log('ref.current NULL');
