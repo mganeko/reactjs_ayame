@@ -98,13 +98,20 @@ class App extends React.Component {
     // (signalingUrl: string, roomId: string, options: ConnectionOptions, debug: boolean, isRelay: boolean)
     this.conn = AyameConnection(signalingUrl, roomId, options);
     this.conn.on('open', ({ authzMetadata }) => console.log('auth:', authzMetadata));
-    this.conn.on('disconnect', (e) => console.log(e));
+    this.conn.on('disconnect', (e) => {
+      console.log('disconnected:', e);
+      this.handleDisconnect();
+    });
     this.conn.on('addstream', async (e) => {
       console.log(e.stream);
       this.remoteStream = e.stream;
       this.setState({ gotRemoteStream: true });
     });
-
+    this.conn.on('removestream', async (e) => {
+      console.log('removestream:', e);
+      this.remoteStream = null;
+      this.setState({ gotRemoteStream: false });
+    });
     this.conn.connect(this.localStream)
       .then(() => {
         console.log('connected');
@@ -116,6 +123,10 @@ class App extends React.Component {
   disconnect(e) {
     e.preventDefault();
     console.log('disconnect');
+    this.handleDisconnect();
+  }
+
+  handleDisconnect() {
     if (this.conn) {
       this.conn.disconnect();
       this.conn = null;
