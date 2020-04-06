@@ -10,15 +10,15 @@ class Video extends React.Component {
   }
 
   componentDidMount() {
-    console.log('Video DidMound()');
+    console.log('Video DidMound(), id=%s', this.props.id);
   }
 
   componentWillUnmount() {
-    console.log('Video WillUnmount()');
+    console.log('Video WillUnmount(), id=%s', this.props.id);
   }
 
   render() {
-    console.log('Video render()');
+    console.log('Video render(), id=%s', this.props.id);
     const stream = this.props.stream;
     if (this.elementRef.current) {
       this.elementRef.current.srcObject = stream;
