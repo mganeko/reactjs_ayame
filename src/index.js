@@ -149,11 +149,11 @@ class App extends React.Component {
     return (
       <div className="App" >
         React Ayame-Lite example<br />
-        <button onClick={this.startVideo}> Start Video</button >
-        <button onClick={this.stopVideo}>Stop Video</button>
+        <button onClick={this.startVideo} disabled={this.state.playing || this.state.connected}> Start Video</button >
+        <button onClick={this.stopVideo} disabled={!this.state.playing || this.state.connected}>Stop Video</button>
         &nbsp;
-        <button onClick={this.connect}> Connect</button >
-        <button onClick={this.disconnect}>Disconnect</button>
+        <button onClick={this.connect} disabled={this.state.connected || !this.state.playing}> Connect</button >
+        <button onClick={this.disconnect} disabled={!this.state.connected}>Disconnect</button>
         <div className="VideoContainer">
           <Video id={"local_video"} width={"160px"} height={"120px"} stream={this.localStream}>
           </Video>
