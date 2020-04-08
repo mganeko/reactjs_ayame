@@ -11,7 +11,8 @@ import './index.css';
 //  - signalingKey (input, url)
 //  - codec (video, audio)
 //  - DONE: button enable/disable control
-//  - github actions for deploy github pages
+//  - DONE: github actions for deploy github pages
+//  - inline
 
 // ------ params -----
 const signalingUrl = 'wss://ayame-lite.shiguredo.jp/signaling';

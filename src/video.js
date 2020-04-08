@@ -33,7 +33,7 @@ class Video extends React.Component {
     }
 
     return (
-      <video className="video_with_border" ref={this.elementRef} id={this.props.id} width={this.props.width} height={this.props.height} autoPlay muted ></video>
+      <video className="video_with_border" ref={this.elementRef} id={this.props.id} width={this.props.width} height={this.props.height} autoPlay muted playsinline ></video>
     );
   }
 }
