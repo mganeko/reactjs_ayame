@@ -32,9 +32,17 @@ class Video extends React.Component {
       console.log('ref.current NULL');
     }
 
-    return (
-      <video className="video_with_border" ref={this.elementRef} id={this.props.id} width={this.props.width} height={this.props.height} autoPlay muted playsInline ></video>
-    );
+    const controls = this.props.controls;
+    if (controls) {
+      return (
+        <video className="video_with_border" ref={this.elementRef} id={this.props.id} width={this.props.width} height={this.props.height} autoPlay muted playsInline controls ></video>
+      );
+    }
+    else {
+      return (
+        <video className="video_with_border" ref={this.elementRef} id={this.props.id} width={this.props.width} height={this.props.height} autoPlay muted playsInline ></video>
+      );
+    }
   }
 }
 

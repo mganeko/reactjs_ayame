@@ -12,7 +12,9 @@ import './index.css';
 //  - codec (video, audio)
 //  - DONE: button enable/disable control
 //  - DONE: github actions for deploy github pages
-//  - inline
+//  - DONE: inline
+//  - volume
+//  - controls
 
 // ------ params -----
 const signalingUrl = 'wss://ayame-lite.shiguredo.jp/signaling';
@@ -167,7 +169,7 @@ class App extends React.Component {
           <Video id={"local_video"} width={"160px"} height={"120px"} stream={this.localStream}>
           </Video>
           <div className="RemoteContainer">
-            <Video id={"remote_video"} width={"320px"} height={"240px"} stream={this.remoteStream}>
+            <Video id={"remote_video"} width={"320px"} height={"240px"} controls={true} stream={this.remoteStream}>
             </Video>
           </div>
         </div>
