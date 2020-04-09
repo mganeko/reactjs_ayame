@@ -78,7 +78,7 @@ class App extends React.Component {
       return;
     }
 
-    const constraints = { video: true, audio: false };
+    const constraints = { video: true, audio: true };
     navigator.mediaDevices.getUserMedia(constraints)
       .then(stream => {
         this.localStream = stream;
