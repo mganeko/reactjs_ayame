@@ -14,7 +14,7 @@ import './index.css';
 //  - DONE: github actions for deploy github pages
 //  - DONE: inline
 //  - volume
-//  - controls
+//  - DONE: controls
 
 // ------ params -----
 const signalingUrl = 'wss://ayame-lite.shiguredo.jp/signaling';
