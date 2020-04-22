@@ -8,6 +8,10 @@ function Video(props) {
 
   console.log('Video rendering, id=%s', props.id);
   const stream = props.stream;
+  let volumeValue = 0;
+  if (props.volume) {
+    volumeValue = props.volume;
+  }
   if (elementRef.current) {
     if (elementRef.current.srcObject === stream) {
       console.log('same stream, so skip');
@@ -15,6 +19,8 @@ function Video(props) {
     else {
       elementRef.current.srcObject = stream;
     }
+
+    elementRef.current.volume = volumeValue;
   }
   else {
     console.log('ref.current NULL');
