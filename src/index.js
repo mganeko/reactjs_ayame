@@ -18,8 +18,17 @@ import './index.css';
 
 // ------ params -----
 const signalingUrl = 'wss://ayame-lite.shiguredo.jp/signaling';
-const signalingKey = null;
+let signalingKey = null;
+const keyFromUrl = getKeyFromUrl();
+if (keyFromUrl && (keyFromUrl !== '')) {
+  signalingKey = keyFromUrl;
+}
 let roomId = 'mm-react-ayame-test';
+const roomFromUrl = getRoomFromUrl();
+if (roomFromUrl && (roomFromUrl !== '')) {
+  roomId = roomFromUrl;
+}
+
 let clientId = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 //let videoCodec = null;
 //let audioCodec = null;
@@ -28,8 +37,31 @@ let clientId = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 // --- Ayame options ---
 const options = defaultOptions;
 options.clientId = clientId ? clientId : options.clientId;
-if (signalingKey) {
-  options.signalingKey = signalingKey;
+//if (signalingKey) {
+//  options.signalingKey = signalingKey;
+//}
+
+// ---- URL ----
+function getRoomFromUrl() {
+  const search = window.location.search;
+  const re = new RegExp('room=([^&=]+)');
+  const results = re.exec(search);
+  let room = '';
+  if (results) {
+    room = results[1];
+  }
+  return room;
+}
+
+function getKeyFromUrl() {
+  const search = window.location.search;
+  const re = new RegExp('key=([^&=]+)');
+  const results = re.exec(search);
+  let key = null;
+  if (results) {
+    key = results[1];
+  }
+  return key;
 }
 
 // ------ App class ------
@@ -42,7 +74,7 @@ class App extends React.Component {
       connected: false,
       gotRemoteStream: false,
       roomId: roomId,
-      signalingKey: '',
+      signalingKey: signalingKey,
     };
 
     // This binding is necessary to make `this` work in the callback
