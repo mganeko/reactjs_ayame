@@ -7,8 +7,8 @@ import { v4 as uuidv4 } from 'uuid';
 import './index.css';
 
 // ---- TODO -----
-//  - DONE: roomID (input, url)
-//  - signalingKey (input, url)
+//  - roomID (DONE:input, url)
+//  - signalingKey (DONE:input, url)
 //  - codec (video, audio)
 //  - DONE: button enable/disable control
 //  - DONE: github actions for deploy github pages
@@ -42,6 +42,7 @@ class App extends React.Component {
       connected: false,
       gotRemoteStream: false,
       roomId: roomId,
+      signalingKey: '',
     };
 
     // This binding is necessary to make `this` work in the callback
@@ -50,7 +51,7 @@ class App extends React.Component {
     this.connect = this.connect.bind(this);
     this.disconnect = this.disconnect.bind(this);
     this.handleRoomChange = this.handleRoomChange.bind(this);
-
+    this.handleKeyChange = this.handleKeyChange.bind(this);
 
     // -- Ayame connection --
     this.conn = null;
@@ -107,8 +108,12 @@ class App extends React.Component {
       return;
     }
 
+    if (this.state.signalingKey && (this.state.signalingKey !== '')) {
+      options.signalingKey = this.state.signalingKey;
+    }
+
     // (signalingUrl: string, roomId: string, options: ConnectionOptions, debug: boolean, isRelay: boolean)
-    console.log('connecting roomId=%s', this.state.roomId);
+    console.log('connecting roomId=%s key=%s', this.state.roomId, options.signalingKey);
     this.conn = AyameConnection(signalingUrl, this.state.roomId, options);
     this.conn.on('open', ({ authzMetadata }) => console.log('auth:', authzMetadata));
     this.conn.on('disconnect', (e) => {
@@ -153,6 +158,10 @@ class App extends React.Component {
     this.setState({ roomId: e.target.value });
   }
 
+  handleKeyChange(e) {
+    this.setState({ signalingKey: e.target.value });
+  }
+
   // -----------------
   render() {
     console.log('App render()');
@@ -161,6 +170,8 @@ class App extends React.Component {
         React Ayame-Lite example<br />
         <button onClick={this.startVideo} disabled={this.state.playing || this.state.connected}> Start Video</button >
         <button onClick={this.stopVideo} disabled={!this.state.playing || this.state.connected}>Stop Video</button>
+        <br />
+        SignalingKey: <input id="signaling_key" type="text" value={this.state.signalingKey} onChange={this.handleKeyChange} disabled={this.state.connected}></input>
         <br />
         Room: <input id="room_id" type="text" value={this.state.roomId} onChange={this.handleRoomChange} disabled={this.state.connected}></input>
         <button onClick={this.connect} disabled={this.state.connected || !this.state.playing}> Connect</button >
