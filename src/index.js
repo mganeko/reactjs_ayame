@@ -7,9 +7,9 @@ import { v4 as uuidv4 } from 'uuid';
 import './index.css';
 
 // ---- TODO -----
-//  - roomID (DONE:input, url)
-//  - signalingKey (DONE:input, url)
-//  - codec (video, audio)
+//  - DONE:roomID (DONE:input, DONE:url)
+//  - DONE: signalingKey (DONE:input, DONE:url)
+//  - DONE: codec (DONE:video, NO:audio)
 //  - DONE: button enable/disable control
 //  - DONE: github actions for deploy github pages
 //  - DONE: inline
@@ -36,6 +36,7 @@ let clientId = uuidv4(); // ⇨ '9b1deb4d-3b7d-4bad-9bdd-2b0d7b3dcb6d'
 
 // --- Ayame options ---
 const options = defaultOptions;
+console.log('Ayame default options:', options);
 options.clientId = clientId ? clientId : options.clientId;
 //if (signalingKey) {
 //  options.signalingKey = signalingKey;
@@ -75,6 +76,7 @@ class App extends React.Component {
       gotRemoteStream: false,
       roomId: roomId,
       signalingKey: signalingKey,
+      videoCodec: 'VP9',
     };
 
     // This binding is necessary to make `this` work in the callback
@@ -84,6 +86,7 @@ class App extends React.Component {
     this.disconnect = this.disconnect.bind(this);
     this.handleRoomChange = this.handleRoomChange.bind(this);
     this.handleKeyChange = this.handleKeyChange.bind(this);
+    this.handleCodecChange = this.handleCodecChange.bind(this);
 
     // -- Ayame connection --
     this.conn = null;
@@ -144,8 +147,11 @@ class App extends React.Component {
       options.signalingKey = this.state.signalingKey;
     }
 
+    options.video.codec = this.state.videoCodec;
+
     // (signalingUrl: string, roomId: string, options: ConnectionOptions, debug: boolean, isRelay: boolean)
     console.log('connecting roomId=%s key=%s', this.state.roomId, options.signalingKey);
+    console.log('Ayame connect options:', options);
     this.conn = AyameConnection(signalingUrl, this.state.roomId, options);
     this.conn.on('open', ({ authzMetadata }) => console.log('auth:', authzMetadata));
     this.conn.on('disconnect', (e) => {
@@ -194,12 +200,23 @@ class App extends React.Component {
     this.setState({ signalingKey: e.target.value });
   }
 
+  handleCodecChange(e) {
+    this.setState({ videoCodec: e.target.value });
+  }
+
   // -----------------
   render() {
     console.log('App render()');
     return (
       <div className="App" >
         React Ayame-Lite example<br />
+        Video Codec:
+        <select value={this.state.videoCodec} onChange={this.handleCodecChange} disabled={this.state.connected} >
+          <option value="VP8">VP8</option>
+          <option value="VP9">VP9</option>
+          <option value="H264">H264</option>
+        </select>
+        &nbsp;
         <button onClick={this.startVideo} disabled={this.state.playing || this.state.connected}> Start Video</button >
         <button onClick={this.stopVideo} disabled={!this.state.playing || this.state.connected}>Stop Video</button>
         <br />
