@@ -17,7 +17,7 @@ import './index.css';
 //  - DONE: controls
 
 // ------ params -----
-const signalingUrl = 'wss://ayame-lite.shiguredo.jp/signaling';
+const signalingUrl = 'wss://ayame-labo.shiguredo.jp/signaling';
 let signalingKey = null;
 const keyFromUrl = getKeyFromUrl();
 if (keyFromUrl && (keyFromUrl !== '')) {
